@@ -1,0 +1,42 @@
+name: Deploy to ACR and Azure Container App
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  ACR_NAME: myacr
+  ACI_NAME: myaci
+  ACR_REGISTRY: myacr.azurecr.io
+  ACR_IMAGE: myacr.azurecr.io/myimage
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Build Docker image
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        push: true
+        tags: ${{ env.ACR_IMAGE }}
+
+    - name: Login to Azure Container Registry
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Publish Docker image to ACR
+      uses: azure/docker-push-action@v1
+      with:
+        context: .
+        login-server: ${{ env.ACR_REGISTRY }}
+        image: ${{ env.ACR_IMAGE }}
+
+    - name: Deploy to Azure Container Instance
+      uses: azure/aci-deploy-
