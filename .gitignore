@@ -1,0 +1,10 @@
+    TEST de l'API sur Postman
+    
+    Tout d'abord, téléchargez et installez Postman sur votre ordinateur à partir de l'adresse suivante : https://www.postman.com/downloads/
+    Démarrez Postman
+    Dans Postman, sélectionnez l'onglet "Collections" et cliquez sur "Créer" pour créer une nouvelle collection. Donnez-lui un nom (par exemple "Test API Iris").
+    Cliquez sur "Nouvelle requête" dans la collection créée, et donnez un nom à la requête (par exemple "Prédiction Iris")
+    Sélectionnez "POST" comme type de requête
+    Dans l'URL de la requête, entrez l'URL de base de votre application Flask, suivie de "/predict" (par exemple, si votre application Flask est en cours d'exécution localement sur le port 5000, l'URL de la requête serait "http://localhost:5000/predict")
+    Dans le corps de la requête, sélectionnez "raw" et sélectionnez "JSON (application / json)" comme format de données. Entrez les données d'entrée pour la prédiction sous forme de tableau JSON, par exemple: {"X": [5.1,3.5,1.4,0.2]}
+    Enfin, cliquez sur "Envoyer" pour envoyer la requête et obtenir la prédiction en réponse.

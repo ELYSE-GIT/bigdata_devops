@@ -8,17 +8,47 @@ Voici les étapes détaillées pour mettre en place le pipeline de déploiement 
         Créez une API Flask qui prend en entrée des données d'Iris et renvoie la prédiction de votre modèle entraîné.
         Utilisez le fichier joblib exporté précédemment pour charger votre modèle dans votre API Flask.
 
+        Pour tester l'API, vous pouvez utiliser Postman ou Curl :
+        Pour utiliser cURL pour appeler l'API sur Ubuntu, vous pouvez utiliser la commande suivante :
+
+        >> curl -X POST -H "Content-Type: application/json" -d '{"X": [5.1,3.5,1.4,0.2]}' http://localhost:5000/predict
+
+                Cette commande envoie une requête POST avec les données d'entrée JSON (dans ce cas, {"X": [5.1,3.5,1.4,0.2]}) à l'URL de l'API (http://localhost:5000/predict).
+
+                Explanation:
+                -X POST : spécifie que c'est une requête POST
+                -H "Content-Type: application/json" : indique que les données dans la requête sont de type JSON
+                -d '{"X": [5.1,3.5,1.4,0.2]}' : les données d'entrée sont passées ici
+                http://localhost:5000/predict : l'url de l'api
+
+En exécutant cette commande, cURL affichera la réponse de l'API, qui devrait être la prédiction sous forme de chaîne de caractères JSON.
+
 ######    3. Packager son API dans une image Docker en local :
         Créez un fichier Dockerfile qui décrit comment construire l'image Docker de votre API.
-        Utilisez la commande "docker build" pour construire l'image Docker de votre API en local.
+
+        Utilisez la commande "docker build" pour construire l'image Docker de votre API en local : 
+
 
 ######    4. Publier son code sur Github :
         Créez un dépôt Github et publiez votre code (API Flask et fichier Dockerfile) dans ce dépôt.
 
 ######    5. Configurer la pipeline de déploiement avec les élements suivants :
         Construire l'image Docker : utilisez la commande "docker build" pour construire une nouvelle image Docker de votre API à chaque fois que des modifications sont apportées à votre code sur Github.
+
+                >> docker build -t efreiprediris:latest . 
+
         Publier l'image Docker sur Azure Container Registry (ACR) : utilisez la commande "docker push" pour publier votre image Docker sur Azure Container Registry (ACR).
+                >> connect : az login
+                >> connect to ACR : az acr login -n efreiprediction.azurecr.io
+
+
         Déployer sur Azure Container App : utilisez Azure Container App pour déployer votre image Docker sur un cluster de conteneurs.
+                >> docker tag efreiprediris:latest efreiprediction.azurecr.io/efreiprediris:latest
+                >> docker push efreiprediction.azurecr.io/efreiprediris:latest
+
+
+
+
         Configurer l'autoscaling en utilisant comme paramètre le nombre de requêtes en simultané : utilisez l'outil d'autoscaling d'Azure pour configurer l'ajustement automatique de la taille de votre cluster en fonction du nombre de requêtes simultanées reçues par votre API.
 
 ######    6. Test de charge avec l'outil de votre choix et observer l'autoscaling :
